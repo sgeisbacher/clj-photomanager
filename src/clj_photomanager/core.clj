@@ -19,25 +19,26 @@
 
 
 (defn prefixmatch [text, prefix]
-  (re-matches (re-pattern (str (strlib/lower-case prefix) ".*")) text))
+  (println (str text ";" prefix))
+  (re-matches (re-pattern (str (strlib/lower-case prefix) ".*")) (strlib/lower-case text)))
 
 
-(defn getgalleries []
+(defn get-galleries []
   (doreq "/rest/gallery/"))
 
-(defn getgallerynames [prefix]
+(defn find-gallery [prefix]
   (filter
-    (fn [gname] (prefixmatch gname prefix))
-    (map 
-      (fn [g] (strlib/lower-case (:name g)))
-      (getgalleries))))
+    (fn [gallery] (prefixmatch (:name gallery) prefix))
+    (get-galleries)))
+
+
 
 
 
 (defroutes app-routes
-  (GET "/" [] (str "hello" " " "sgeisbacher" "!"))
-  (GET "/galleries" [] {:body (getgalleries)})
-  (GET "/gallerynames/:prefix" [prefix] {:body {:names (getgallerynames prefix)}})
+  (GET "/" [] (str "hello" " " "clojure-guys" "!"))
+  (GET "/gallery/" [] {:body (get-galleries)})
+  (GET "/gallery/:prefix" [prefix] {:body (find-gallery prefix)})
   (route/not-found {:body {:error 404}}))
 
 (defn wrap-error-handling [f]
