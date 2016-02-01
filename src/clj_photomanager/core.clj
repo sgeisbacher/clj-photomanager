@@ -14,7 +14,7 @@
 (defn prep_json_resp [resp]
   (parse-string (:body resp) true))
 
-(defn doreq [url] (prep_json_resp @(http/get (str "http://localhost:8080" url) {})))
+(defn doreq [url] (prep_json_resp @(http/get (str "http://eco11-srv.ops.local.netconomy.net:8080" url) {})))
 
 
 
@@ -31,7 +31,9 @@
     (fn [gallery] (prefixmatch (:name gallery) prefix))
     (get-galleries)))
 
-
+(defn get-photo-gallery-map []
+  "hello"
+  )
 
 
 
@@ -39,6 +41,7 @@
   (GET "/" [] (str "hello" " " "clojure-guys" "!"))
   (GET "/gallery/" [] {:body (get-galleries)})
   (GET "/gallery/:prefix" [prefix] {:body (find-gallery prefix)})
+  (GET "/photomap/" [] {:body (get-photo-gallery-map)})
   (route/not-found {:body {:error 404}}))
 
 (defn wrap-error-handling [f]
