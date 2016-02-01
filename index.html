@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-touch-fullscreen" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    </head>
+    <body>
+        <div>
+            Available Functions:
+            <ul>
+                <li>/config - shows the current configuration</li>
+                <li>/config/reload - reloads the configuration</li>
+                <li>/cache - shows all cached items</li>
+                <li>/cache/evict/{task} - removes a key {task} from the cache</li>
+                <li>/cache/evict/all - removes all keys from the cache</li>
+                <li>/initialData - fetches initial Data (projects, status, issuetypes)</li>
+                <li>
+                    /fetch - fetches file frequency for the given jql query<br />
+                    Parameters: <br />
+                    <ul>
+                        <li>jql - String, example: "project in (a)"</li>
+                    </ul>
+                </li>
+                <li>
+                /fetchp - fetches file frequency for the given parameters<br />
+                Parameters: <br />
+                <ul>
+                    <li>projects - String, example: "a, b, c"</li>
+                    <li>issuetypes - String, example: "a, b, c"</li>
+                    <li>statuses - String, example: "a, b, c"</li>
+                    <li>datefrom - String, example: "2015-05-25"</li>
+                    <li>dateto - String, example: "2015-05-25"</li>
+                </ul>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
