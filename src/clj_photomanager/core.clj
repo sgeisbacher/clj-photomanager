@@ -32,8 +32,14 @@
     (get-galleries)))
 
 (defn get-photo-gallery-map []
-  "hello"
-  )
+  (reduce
+    (fn [init entry] (merge-with concat init entry)) {}
+      (map
+        (fn [gallery]
+          (let [gid (:id gallery)]
+            (reduce
+              (fn [acc photo] (assoc acc (:name photo) gid)) {} (:photos gallery))))
+        (get-galleries))))
 
 
 
