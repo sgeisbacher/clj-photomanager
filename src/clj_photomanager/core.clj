@@ -37,7 +37,7 @@
     (map
       (fn [gallery]
         (reduce
-          (fn [photos photo] (assoc photos (:name photo) (:id gallery))) 
+          (fn [photos photo] (assoc photos (:name photo) (dissoc (dissoc gallery :photos) :mainPhoto))) 
           {} 
           (:photos gallery)))
       (get-galleries))))
