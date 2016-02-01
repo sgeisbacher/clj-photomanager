@@ -7,35 +7,28 @@
         <meta name="apple-touch-fullscreen" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
     </head>
-    <body>
+	<body>
+		<h1>Welcome Bros to Clojure-Coding-DOJO!</h1>
         <div>
             Available Functions:
             <ul>
-                <li>/config - shows the current configuration</li>
-                <li>/config/reload - reloads the configuration</li>
-                <li>/cache - shows all cached items</li>
-                <li>/cache/evict/{task} - removes a key {task} from the cache</li>
-                <li>/cache/evict/all - removes all keys from the cache</li>
-                <li>/initialData - fetches initial Data (projects, status, issuetypes)</li>
-                <li>
-                    /fetch - fetches file frequency for the given jql query<br />
-                    Parameters: <br />
-                    <ul>
-                        <li>jql - String, example: "project in (a)"</li>
-                    </ul>
-                </li>
-                <li>
-                /fetchp - fetches file frequency for the given parameters<br />
-                Parameters: <br />
-                <ul>
-                    <li>projects - String, example: "a, b, c"</li>
-                    <li>issuetypes - String, example: "a, b, c"</li>
-                    <li>statuses - String, example: "a, b, c"</li>
-                    <li>datefrom - String, example: "2015-05-25"</li>
-                    <li>dateto - String, example: "2015-05-25"</li>
-                </ul>
-                </li>
+				<li><a href="/">/</a> - help</li>
+				<li><a href="/gallery/">/gallery/</a> - get gallery-data</li>
+				<li><a href="/gallery/I">/gallery/{name-prefix}</a> - find gallery by name-prefix</li>
+				<li><a href="/photomap/">/photomap/</a> - which photo belongs to which gallery</li>
+				<li><a href="/gallerysize/1">/gallerysize/{gallery-id}</a> - get disk-usage of gallery</li>
             </ul>
-        </div>
+		</div>
+		<br/><br/>
+		<div>
+			<h2>Tipps for DOJO:</h2>
+			<ul>
+				<li><b>Upstream:</b>
+				<a href="http://eco11-srv.ops.local.netconomy.net:8080/rest/gallery/">http://eco11-srv.ops.local.netconomy.net:8080/rest/gallery/</a></li>
+				<li><a href="https://clojuredocs.org/">ClojureDocs</a></li>
+				<li><a href="http://www.braveclojure.com/do-things/">Clojure for the Brave and True</a></li>
+				<li><a href="https://docs.google.com/presentation/d/1zPV3O3XFaEPL7bnFfnktRUafQIHW9eUjlFWbFxL3p_I/edit">Slides</a></li>
+			</ul>
+		</div>
     </body>
 </html>

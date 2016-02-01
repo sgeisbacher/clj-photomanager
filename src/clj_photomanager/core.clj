@@ -11,25 +11,48 @@
             [clojure.core.memoize :as memo]))
 
 
+;(def upstream "http://localhost:8000")
+(def upstream "http://eco11-srv.ops.local.netconomy.net:8080")
+
+
+
+
 (defn prep_json_resp [resp]
   (parse-string (:body resp) true))
 
-(defn doreq [url] (prep_json_resp @(http/get (str "http://eco11-srv.ops.local.netconomy.net:8080" url) {})))
+(defn doreq [url] (prep_json_resp @(http/get (str upstream url) {})))
 
 
 
-(defn prefixmatch [text, prefix]
-  (println (str text ";" prefix))
-  (re-matches (re-pattern (str (strlib/lower-case prefix) ".*")) (strlib/lower-case text)))
 
 
 (defn get-galleries []
   (doreq "/rest/gallery/"))
 
-(defn find-gallery [prefix]
+
+(defn prefixmatch [text, prefix]
+  (re-matches 
+    (re-pattern (str (strlib/lower-case prefix) ".*")) 
+    (strlib/lower-case text)))
+
+
+(defn find-gallery-by-name-prefix [prefix]
   (filter
     (fn [gallery] (prefixmatch (:name gallery) prefix))
     (get-galleries)))
+
+
+(defn calc-gallery-size [gid]
+  (reduce 
+    (fn [sizesum photo] (+ sizesum (:filesize photo)))
+    0 
+    (first 
+      (map
+        (fn [gallery] (:photos gallery))
+        (filter 
+          (fn [gallery] (= (str gid) (str (:id gallery)))) 
+          (get-galleries))))))
+
 
 (defn get-photo-gallery-map []
   (reduce
@@ -44,11 +67,15 @@
 
 
 
+
+
+
 (defroutes app-routes
-  (GET "/" [] (str "hello" " " "clojure-guys" "!"))
+  (GET "/" [] (slurp "index.html"))
   (GET "/gallery/" [] {:body (get-galleries)})
-  (GET "/gallery/:prefix" [prefix] {:body (find-gallery prefix)})
+  (GET "/gallery/:prefix" [prefix] {:body (find-gallery-by-name-prefix prefix)})
   (GET "/photomap/" [] {:body (get-photo-gallery-map)})
+  (GET "/gallerysize/:gid" [gid] {:body {:gallery-size (calc-gallery-size gid)}})
   (route/not-found {:body {:error 404}}))
 
 (defn wrap-error-handling [f]
