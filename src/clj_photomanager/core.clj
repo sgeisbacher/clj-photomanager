@@ -27,46 +27,28 @@
 
 
 (defn get-galleries []
-  (doreq "/rest/gallery/"))
-
+ (doreq "/rest/gallery/")
+  )
 
 (defn prefixmatch [text, prefix]
-  (re-matches 
-    (re-pattern (str (strlib/lower-case prefix) ".*")) 
-    (strlib/lower-case text)))
-
+  (not (nil? (re-matches (re-pattern (str prefix ".*")) text)))
+  )
 
 (defn find-gallery-by-name-prefix [prefix]
-  (filter
-    (fn [gallery] (prefixmatch (:name gallery) prefix))
-    (get-galleries)))
+  (filter #(prefixmatch (:name %) prefix) (get-galleries))
+ )
 
+(defn reverse-single-gallery [gallery]
+  (loop [result {}  photos (:photos gallery)] (if (empty? photos) result (recur (assoc result (:name (first photos)) {(:name gallery) (:id gallery)}) (rest photos))))
+  )
 
 (defn calc-gallery-size [gid]
-  (reduce 
-    (fn [sizesum photo] (+ sizesum (:filesize photo)))
-    0 
-    (first 
-      (map
-        (fn [gallery] (:photos gallery))
-        (filter 
-          (fn [gallery] (= (str gid) (str (:id gallery)))) 
-          (get-galleries))))))
-
+  (reduce #(+ %1 %2) (map #(:filesize %) (:photos (first (filter #(= (:id %) gid) (get-galleries))))))
+  )
 
 (defn get-photo-gallery-map []
-  (reduce
-    (fn [init entry] (merge-with concat init entry)) {}
-    (map
-      (fn [gallery]
-        (reduce
-          (fn [photos photo] (assoc photos (:name photo) (dissoc (dissoc gallery :photos) :mainPhoto))) 
-          {} 
-          (:photos gallery)))
-      (get-galleries))))
-
-
-
+  (reduce #(merge %1 %2) {} (map reverse-single-gallery (get-galleries)))
+  )
 
 
 
@@ -90,4 +72,3 @@
       (wrap-error-handling)
       (ring.middleware.json/wrap-json-response)
       (handler/api)))
-
