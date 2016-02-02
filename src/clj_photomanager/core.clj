@@ -56,7 +56,8 @@
 
 (defn get-photo-gallery-map []
   (reduce
-    (fn [init entry] (merge-with concat init entry)) {}
+    (fn [init entry] (merge-with concat init entry)) 
+    {}
     (map
       (fn [gallery]
         (reduce
